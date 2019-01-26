@@ -362,9 +362,9 @@ let initPhotoSwipeWithJQuery = function() {
 
         $(imgElement).attr('pswp-id', count);
 
-        $(imgElement).tap((e) => {
-            openPhotoSwipe($(imgElement).attr('pswp-id'));
-        });
+        $(imgElement).on('tap',function(e){
+		   	 openPhotoSwipe($(imgElement).attr('pswp-id'));
+		   });
 
         items.push(newItem);
         count++;
