@@ -1,0 +1,401 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+<meta content="no" name="apple-mobile-web-app-capable" /> 
+<meta charset="UTF-8">
+<title>宇通环卫技术部2018年会回顾</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<style type="text/css">
+
+</style>
+<link rel="stylesheet" href="photoswipe.css"> 
+
+<!-- Skin CSS file (styling of UI - buttons, caption, etc.)
+     In the folder of skin CSS file there are also:
+     - .png and .svg icons sprite, 
+     - preloader.gif (for browsers that do not support CSS animations) -->
+<link rel="stylesheet" href="default-skin/default-skin.css"> 
+
+<!-- Core JS file -->
+<script src="photoswipe.js"></script> 
+
+<!-- UI JS file -->
+<script src="photoswipe-ui-default.js"></script> 
+<script type="text/javascript" src="iscroll.js"></script>
+<!--script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="jquery.scrollLoading.js"></script-->
+
+<script type="text/javascript">
+function $$(id){return document.getElementById(id)}
+//var imgUrl = 'http://1822mall.com/project1/images/wx_img.jpg';
+//var lineLink = 'http://1822mall.com/project1/';
+//var imgUrl = 'http://116.255.193.122:9999/pCM/images/wx_img.jpg';
+//var lineLink = 'http://116.255.193.122:9999/pCM/';
+var imgUrl = 'images/yutong.jpg';
+var lineLink = 'index.html';
+var shareTitle = '宇通环卫技术部2018年会回顾';
+var descContent = "图多杀猫！建议wifi环境下横屏使用哦";
+var appid = 'wxc87c106733e11828';
+
+function shareFriend() {
+    WeixinJSBridge.invoke('sendAppMessage',{
+        "appid": appid,
+        "img_url": imgUrl,
+        "img_width": "200",
+        "img_height": "200",
+        "link": lineLink,
+        "desc": descContent,
+        "title": shareTitle
+    }, function(res) {
+    _report('send_msg', res.err_msg);
+    })
+}
+function shareTimeline() {
+    WeixinJSBridge.invoke('shareTimeline',{
+        "img_url": imgUrl,
+        "img_width": "200",
+        "img_height": "200",
+        "link": lineLink,
+        "desc": descContent,
+        "title": shareTitle
+    }, function(res) {
+    _report('timeline', res.err_msg);
+    });
+}
+function shareWeibo() {
+    WeixinJSBridge.invoke('shareWeibo',{
+        "content": descContent,
+        "url": lineLink,
+    }, function(res) {
+    _report('weibo', res.err_msg);
+    });
+}
+try{
+// 当微信内置浏览器完成内部初始化后会触发WeixinJSBridgeReady事件。
+document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {// 发送给好友
+	WeixinJSBridge.on('menu:share:appmessage', function(argv){
+		shareFriend();
+	});
+	// 分享到朋友圈
+	WeixinJSBridge.on('menu:share:timeline', function(argv){
+		shareTimeline();
+	});
+	// 分享到微博
+	WeixinJSBridge.on('menu:share:weibo', function(argv){
+		shareWeibo();
+	});
+}, false);
+}catch(e){
+}
+//--------------------
+var myScroll, tar, tmp, total = 0, cw = 0, ch = 0, page, nowPage = 1, notPlayed = true, offsetW = 0;
+window.onload = function () {
+	tar = $$('wrapper').children[0];
+	total = tar.children.length;
+	cw = $$('all').offsetWidth;
+	ch = $$('all').offsetHeight;
+	offsetW = (cw - (ch/1430*1000) )/ 2;
+	if(document.documentElement.clientHeight == screen.height){
+		ch = document.documentElement.clientHeight - 64;
+		//$$('all').style.height = ch+'px';
+		tar.style.height = ch * total + total + 'px';
+	}else{
+		tar.style.height = ch * total + total + 'px';
+	}
+	//$$('all').style.height = ch+'px';
+	for(i = 0; i < total; i++){
+		tmp = tar.children[i];
+		tmp.style.height = ch+'px';
+		if(tmp.children[0]){
+			if(tmp.children[0].tagName == 'IMG'){
+				tmp.children[0].style.marginLeft = offsetW +'px';
+			}
+		}
+		if(i > 0 && i < 15){
+			//tmp.style.backgroundImage = "url('images/p"+i+".jpg')";
+		}else if(i == 15){
+			//tmp.style.backgroundImage = "url('images/end1.jpg')";
+		}
+	}
+	
+	
+	//callIn(0, 3);
+	//$$('all').style.opacity = 1;
+	myScroll = new IScroll('#wrapper', {
+		momentum: false,
+		snap: 'li',
+		click: true,
+		mouseWheel: true,
+		//mouseWheelSpeed: 1,
+		keyBindings: true,
+		preventDefault: true,
+		snapThreshold: 0.2,
+		snapSpeed: 1000
+	});
+	//myScroll.goToPage(0, 5, 0);
+	myScroll.on('scrollStart', function(){
+		if(notPlayed){
+			audio.play();
+			notPlayed = false;
+		}
+	});
+	myScroll.on('scrollEnd', function(){
+		nowPage = myScroll.currentPage.pageY + 1;
+		if(nowPage > 1){
+			if(total > nowPage-1){
+				tmp = tar.children[nowPage-1];
+				if(tmp.children[0]){
+					if(tmp.children[0].getAttribute('data-url')){
+						tmp.children[0].setAttribute('src',tmp.children[0].getAttribute('data-url'));
+						tmp.children[0].setAttribute('data-url', '');
+					}
+				}
+			}
+			if(total > nowPage){
+				tmp = tar.children[nowPage];
+				if(tmp.children[0]){
+					if(tmp.children[0].getAttribute('data-url')){
+						tmp.children[0].setAttribute('src',tmp.children[0].getAttribute('data-url'));
+						tmp.children[0].setAttribute('data-url', '');
+					}
+				}
+			}
+		}
+
+		//page.innerHTML = nowPage+'/13';
+		switch (nowPage){
+			case 2:
+				//page2.innerHTML = '<p class="newTxt">中国移动服务客户的模式，<br>也正因此迎来前所未有的重大转变</p><h2 class="newTitle" id="p2e2">曾经，我们等待客户</h2>';
+				//$$('p2e2').addEventListener("webkitAnimationEnd", function(){this.style.opacity = 1;}, false);
+				break;
+			default:
+				break;
+		}
+		if(nowPage != 2){
+			//page2.innerHTML = '';
+		}
+	});
+
+	window.setTimeout(setSound, 50);
+	window.setTimeout(function(){
+		//$$('pLoad').innerHTML = '<img src="images/page11-e3.png"><img src="images/extraP1.jpg">';
+	}, 9000);
+}
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+function setSound(){
+	//audio = document.createElement('audio');
+	audio = $$('myAudio');
+	//audio.src = 'images/bgm1.mp3';
+	audio.style.display = 'none';
+	audio.autoPlay = true;
+	audio.loop = true;
+	//audio.volume = 0.4;
+	//audio.addEventListener("canplaythrough", function () {audio.play();}, false);
+	
+	audioBtn = document.createElement('div');
+	audioBtn.id = 'auBtn';
+	audioBtn.addEventListener('click', clickAudio, false);
+	//document.body.appendChild(audio);
+	document.body.appendChild(audioBtn);
+	//audio.addEventListener('ended', function () {
+    	//audio.play(); 
+	//})
+}
+function clickAudio(){
+	if(audioBtn.className == 'mute'){
+		audioBtn.className = '';
+		audio.play();
+	}else{
+		audioBtn.className = 'mute';
+		audio.pause();
+	}
+}
+</script>
+<script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+</head>
+
+<body>
+<img id="arrow" src="images/arrow.png">
+<div id="page"></div>
+<div id="all">
+		<div id="wrapper">
+				<ul data-pswp-uid="1" id="gallery">
+						<li><img src="images/p15.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p16.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p17.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p18.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p19.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p20.jpg" src="images/1px.png"data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p21.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p22.jpg" src="images/1px.png"data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p23.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p24.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p25.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p26.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p27.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p28.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p29.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p30.jpg" src="images/1px.png" data-size="1000x1430" alt="ddd"></li>
+						<li><img data-url="images/p31.jpg" src="images/1px.png"data-size="1000x1430" alt="ddd"></li>
+						<li class="page e3" onClick="window.location.href='index.html'">&nbsp;</li>
+				</ul>
+		</div>
+		<audio id="myAudio" src="images/bgm1.mp3" autoplay loop></audio>
+		<div id="pLoad"></div>
+</div>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+var xmlHttp;
+function createxmlHttpRequest(){
+if(window.ActiveXObject){
+    xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+}else if(window.XMLHttpRequest)
+    xmlHttp=new XMLHttpRequest();
+}
+function doGet(url){//注意在传参数值的时候最好使用encodeURI处理一下，防止乱码
+	createxmlHttpRequest();
+	xmlHttp.open("GET",url);
+	xmlHttp.send(null);
+	xmlHttp.onreadystatechange=function(){
+		if(xmlHttp.readyState==4&&xmlHttp.status==200){
+			//alert('success');
+			//window.setTimeout(function(){$$('myTj').src = 'http://js.tongji.linezing.com/3530192/tongji.js';}, 3000);
+		}else{
+			//alert('fail');
+		}
+	}
+}
+doGet('images/bgm1.mp3');
+</script>
+
+<script type="text/javascript">
+	let pswpElement = $('.pswp')[0];
+   let gallery = null;
+   
+   let initPhotoSwipeWithJQuery = function() {
+	   let items = [];
+   
+	   let count = 0;
+   
+	   $('#gallery').find('img').each((index, imgElement) => {
+		   let msize=$(imgElement).attr('data-size').split("x");
+		   let newItem = {
+			   src: $(imgElement).attr('data-url'),
+			   w: parseInt(msize[0]),
+			   h: parseInt(msize[1]),
+			   title:$(imgElement).attr('alt'),
+			   el: imgElement
+		   };
+   
+		   $(imgElement).attr('pswp-id', count);
+   
+		   $(imgElement).click((e) => {
+			   openPhotoSwipe($(imgElement).attr('pswp-id'));
+		   });
+   
+		   items.push(newItem);
+		   count++;
+	   })
+   
+	   return items;
+   }
+   
+   function openPhotoSwipe(index) {
+	   index = index || 0;
+	   let elementOptions = {
+		   index: parseInt(index),
+		   fullscreenEl :false,
+		   tapToClose :false,
+		   tapToToggleControls :false,
+		   shareEl :false
+	   };
+   
+	   gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, images, elementOptions);
+	   gallery.init();
+   }
+   
+   // Initializing photoswipe for first-time
+   let images = initPhotoSwipeWithJQuery();
+   
+   // Opens photoswipe if URL contains photoswipe data
+   let searchParams = new URLSearchParams(window.location.href);
+   let currentPid = searchParams.get('pid');
+   
+   if(currentPid) openPhotoSwipe(currentPid);
+   
+	   </script>
+<!--script type="text/javascript" id="myTj"></script-->
+<!--img src="http://img.tongji.linezing.com/3530192/tongji.gif" width="0px" height="0px" style="display:none;" alt=""-->
+<!--script type="text/javascript" src="http://js.tongji.linezing.com/3530192/tongji.js"></script-->
+<!--div style="display:none"><script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254073236'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1254073236%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script></div-->
+<!--script src="http://s4.cnzz.com/z_stat.php?id=1254073236&web_id=1254073236" language="JavaScript"></script-->
+</body>
+</html>
