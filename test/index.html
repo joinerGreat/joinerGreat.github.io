@@ -242,7 +242,7 @@ function clickAudio(){
 						<li><img data-url="images/p12.jpg" src="images/1px.png"  data-size="1000x1430" alt="dd"></li>
 						<li><img data-url="images/p13.jpg" src="images/1px.png"  data-size="1000x1430" alt="dd"></li>
 						<li><img data-url="images/p14.jpg" src="images/1px.png"  data-size="1000x1430" alt="dd"></li>
-						<li class="page e2" onClick="window.location.href='index2.html'">&nbsp;</li>
+						<li class="page e2" id="nextpage" >&nbsp;</li>
 				</ul>
 		</div>
 		<audio id="myAudio" src="images/bgm1.mp3" autoplay loop></audio>
@@ -395,6 +395,10 @@ let searchParams = new URLSearchParams(window.location.href);
 let currentPid = searchParams.get('pid');
 
 if(currentPid) openPhotoSwipe(currentPid);
+
+$("#nextpage").on('tap',function(e){
+		   	window.location.href="index2.html";
+		   });
 
 	</script>
 <!--script type="text/javascript" id="myTj"></script-->
