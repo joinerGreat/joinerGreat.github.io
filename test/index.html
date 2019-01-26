@@ -213,7 +213,7 @@ function clickAudio(){
 	}
 }
 </script>
-<script src="zepto.min.js"></script>
+
 </head>
 
 <body>
@@ -340,6 +340,7 @@ function doGet(url){//注意在传参数值的时候最好使用encodeURI处理�
 }
 doGet('images/bgm1.mp3');
 </script>
+<script src="zepto.min.js"></script>
 <script type="text/javascript">
  let pswpElement = $('.pswp')[0];
 let gallery = null;
@@ -361,7 +362,7 @@ let initPhotoSwipeWithJQuery = function() {
 
         $(imgElement).attr('pswp-id', count);
 
-        $(imgElement).click((e) => {
+        $(imgElement).tab((e) => {
             openPhotoSwipe($(imgElement).attr('pswp-id'));
         });
 
